@@ -118,8 +118,8 @@ public class UserCollectionFragment extends TomahawkFragment {
                 PreferenceManager.getDefaultSharedPreferences(TomahawkApp.getContext());
         List<Integer> dropDownItems = new ArrayList<Integer>();
         dropDownItems.add(R.string.collection_dropdown_recently_added);
-        dropDownItems.add(R.string.collection_dropdown_alphabetical);
-        dropDownItems.add(R.string.collection_dropdown_artist);
+        dropDownItems.add(R.string.collection_dropdown_alpha);
+        dropDownItems.add(R.string.collection_dropdown_alpha_artists);
         AdapterView.OnItemSelectedListener spinnerClickListener
                 = new AdapterView.OnItemSelectedListener() {
             @Override
@@ -139,12 +139,15 @@ public class UserCollectionFragment extends TomahawkFragment {
         };
         int initialPos = preferences.getInt(USER_COLLECTION_SPINNER_POSITION, 0);
         if (initialPos == 0) {
+            Collection userColl = CollectionManager.getInstance().getCollection(
+                    TomahawkApp.PLUGINNAME_USERCOLLECTION);
             Collections.sort(items, new TomahawkListItemComparator(
-                    TomahawkListItemComparator.COMPARE_RECENTLY_ADDED));
+                    TomahawkListItemComparator.COMPARE_RECENTLY_ADDED,
+                    userColl.getAddedTimeStamps()));
         } else if (initialPos == 1) {
             Collections.sort(items, new TomahawkListItemComparator(
                     TomahawkListItemComparator.COMPARE_ALPHA));
-        } else if (initialPos == 2){
+        } else if (initialPos == 2) {
             Collections.sort(items, new TomahawkListItemComparator(
                     TomahawkListItemComparator.COMPARE_ARTIST_ALPHA));
         }

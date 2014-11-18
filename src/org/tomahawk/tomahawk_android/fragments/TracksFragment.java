@@ -223,8 +223,8 @@ public class TracksFragment extends TomahawkFragment {
                     PreferenceManager.getDefaultSharedPreferences(TomahawkApp.getContext());
             List<Integer> dropDownItems = new ArrayList<Integer>();
             dropDownItems.add(R.string.collection_dropdown_recently_added);
-            dropDownItems.add(R.string.collection_dropdown_alphabetical);
-            dropDownItems.add(R.string.collection_dropdown_artist);
+            dropDownItems.add(R.string.collection_dropdown_alpha);
+            dropDownItems.add(R.string.collection_dropdown_alpha_artists);
             AdapterView.OnItemSelectedListener spinnerClickListener
                     = new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -246,8 +246,11 @@ public class TracksFragment extends TomahawkFragment {
             };
             int initialPos = preferences.getInt(COLLECTION_TRACKS_SPINNER_POSITION, 0);
             if (initialPos == 0) {
+                Collection userColl = CollectionManager.getInstance().getCollection(
+                        TomahawkApp.PLUGINNAME_USERCOLLECTION);
                 Collections.sort(queries, new TomahawkListItemComparator(
-                        TomahawkListItemComparator.COMPARE_RECENTLY_ADDED));
+                        TomahawkListItemComparator.COMPARE_RECENTLY_ADDED,
+                        userColl.getAddedTimeStamps()));
             } else if (initialPos == 1) {
                 Collections.sort(queries, new TomahawkListItemComparator(
                         TomahawkListItemComparator.COMPARE_ALPHA));
